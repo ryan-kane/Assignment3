@@ -61,6 +61,20 @@ function getWeather(city, res){
   }).end()
 }
 
+function getRecipes(ingredient, res){
+
+//You need to provide an appid with your request.
+//Many API services now require that clients register for an app id.
+ 
+  const options = {
+     host: 'www.food2fork.com',
+     path: `/api/search?q=${ingredient}&key=${API_KEY}`
+  }
+  http.request(options, function(apiResponse){
+    parseData(apiResponse, res)
+  }).end()
+} 
+
 http.createServer(function (req, res) {
   let requestURL = req.url
   let query = url.parse(requestURL).query //GET method query parameters if any

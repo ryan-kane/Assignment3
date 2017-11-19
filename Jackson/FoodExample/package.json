@@ -1,0 +1,16 @@
+{
+  "name": "test1",
+  "version": "1.0.0",
+  "description": "***IMPORTANT: The code in this example will NOT run unless you add your openweathermap.org API ID Key to\r the server.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Jackson Moore",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "request": "^2.81.0"
+  }
+}
