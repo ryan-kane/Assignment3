@@ -11,10 +11,15 @@ function getRecipes() {
     let xhr = new XMLHttpRequest()
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            //let response = JSON.parse(xhr.responseText)
- 			ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
-			<h1> ${xhr.responseText} </h1>
+            let response = JSON.parse(xhr.responseText)
+			ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
+			<h1>${response.count} recipes for ${ingredientName} </h1>
 			`
+			for (var i = 0; i < response.count; i++){
+				ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
+				<li>${response.recipes[i].title}</li>
+				`
+			}
         }
     }
     xhr.open('GET', `/recipes?ingredient=${ingredientName}`, true)
