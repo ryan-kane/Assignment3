@@ -1,4 +1,7 @@
 /* Your styles go in this file */
+* {
+    box-sizing: border-box;
+}
 
 html {
     font-family: 'Roboto', sans-serif;

@@ -9,7 +9,7 @@ To test:
 http://localhost:3000
 or
 http://localhost:3000/weather?city=Ottawa
-http://localhost:3000/?ingredient=Basil
+http://localhost:3000/recipes?ingredient=Basil
 to just set JSON response. (Note it is helpful to add a JSON formatter extension, like JSON Formatter, to your Chrome browser for viewing just JSON data.)
 */
 const express = require('express') //express framework
@@ -33,20 +33,6 @@ app.get('/', (request, response) => {
   response.sendFile(__dirname + '/views/index.html')
 })
 
-//Get weather through express
-app.get('/weather', (request, response) => {
-  let city = request.query.city
-  if(!city) {
-	console.log("No city found")
-    return response.json({message: 'Please enter a city name'})
-  }
-  console.log("City found")
-  const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}`
-  requestModule.get(url, (err, res, data) => {
-    return response.contentType('application/json').json(JSON.parse(data))
-  })
-})
-
 //Get recipes through express
 app.get('/recipes', (request, response) => {
   let ingredient = request.query.ingredient
@@ -59,7 +45,10 @@ app.get('/recipes', (request, response) => {
   requestModule.get(url, (err, res, data) => {
     return response.contentType('application/json').json(JSON.parse(data))
   })
+
 })
+
+
 
 //start server
 app.listen(PORT, err => {
