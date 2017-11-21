@@ -16,10 +16,12 @@ function handleSubmit(){
         return alert('Please enter an ingredient');
     }
 
+    //function to recieve the JSON object that is in response to our POST request
     let xhr = new XMLHttpRequest()
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             let response = JSON.parse(xhr.responseText)
+            //display the information in the JSON object
 			mainDiv.innerHTML = mainDiv.innerHTML + `
 			<h1>${response.count} recipes for ${ingredient.name} </h1>
 			`
@@ -41,6 +43,8 @@ function handleSubmit(){
 			}
         }
     }
+
+    //send a post request with the query
     xhr.open('POST', `/recipes?ingredient=${ingredient.name}`, true);
     xhr.send();
 }

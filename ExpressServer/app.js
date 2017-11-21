@@ -26,6 +26,8 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/recipes', (request, response) => {
+  //This route allows the user to launch the app by just providing 
+  //the url with the query. It does this using pug.
   let ingredient = request.query.ingredient;
   if(!ingredient) {
     console.log('no ingredient');
@@ -44,14 +46,21 @@ app.get('/recipes', (request, response) => {
 
 app.post('/recipes', (req, res) => { 
   console.log(req.query.ingredient);
+  //the goal is for the server to act kind of like an API so
+  //the response should only contain the information in the JSON that
+  //is useful to the client
   if(!req.query.ingredient){
     return res.json({message: 'ingredient not found'});
   }
   const url = `http://www.food2fork.com/api/search?q=${req.query.ingredient}&key=${API_KEY}`;
   requestModule.get(url, (err, response, data) => {
-    return res.contentType('application/json').json(JSON.parse(data));
+    let dataObj = JSON.parse(data);
+    responseObj = {};
+    responseObj.count = dataObj.count;
+    responseObj.recipes = dataObj.recipes;
+    return res.contentType('application/json').json(responseObj);
     
-});
+  });
 });
 
 
