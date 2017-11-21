@@ -16,8 +16,11 @@ function getRecipes() {
 			<h1>${response.count} recipes for ${ingredientName} </h1>
 			`
 			for (var i = 0; i < response.count; i++){
-				ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
-				<li>${response.recipes[i].title}</li>
+                ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
+                <div class="recipes">
+                    <p>${response.recipes[i].title}<p>
+                    <img src="${response.recipes[i].image_url}">
+                </div>
 				`
 			}
         }
