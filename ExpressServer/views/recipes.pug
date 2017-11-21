@@ -1,0 +1,31 @@
+doctype html
+html
+  head
+    title= 'Recipes'
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/javascripts/recipes.js")
+  body
+    block content
+        div(class="container")
+            div(class="wrapper")
+            p= 'Enter Ingredient Name'
+                input(
+                type="text"
+                id="ingredients_input"
+                )
+                button(
+                id="btn_submit" 
+                onclick="handleSubmit()" 
+                style="margin-bottom: 50px;") Submit
+            div(id="main")
+                if title  
+                    h1= title
+                if recipes 
+                    each recipe in recipes
+                        div(class="multicolumn")
+                            ul
+                                li(class="recipes")
+                                    a(href=recipe.f2f_url target="_blank")
+                                        figure
+                                            img(class="recipe" src=recipe.image_url)
+                                            figcaption= recipe.title

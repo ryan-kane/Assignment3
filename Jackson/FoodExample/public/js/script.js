@@ -19,7 +19,9 @@ function getRecipes() {
 				ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
 				<li>${response.recipes[i].title}</li>
 				<a href="${response.recipes[i].f2f_url}" target="_blank"> <img src="${response.recipes[i].image_url}" style="width:500px;height:500px;"> </a>
-				`
+||||||| merged common ancestors
+				ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
+				<li>${response.recipes[i].title}</li>
 			}
         }
     }

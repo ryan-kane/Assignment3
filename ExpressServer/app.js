@@ -1,46 +1,64 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+//simple express server bult using example from lecture notes
+//http://people.scs.carleton.ca/~comp2406/notes/17%20Introducing%20Express/
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+const express = require('express');
+const logger = require('morgan');
+const requestModule = require('request');
+const PORT = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
 
-var app = express();
+const API_KEY = '4005fdf6e9370006592efe57404fcf46';
+const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//template engine
+app.set('view engine', 'pug');
+app.set('views', __dirname + '/views');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//MiddleWare
 app.use(logger('dev'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false}));
 
-app.use('/', index);
-app.use('/users', users);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+//Routes
+app.get('/', (req, res) =>{
+  res.sendFile(__dirname +'/public/recipes.html');
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.get('/recipes', (request, response) => {
+  let ingredient = request.query.ingredient;
+  if(!ingredient) {
+    console.log('no ingredient');
+    return response.render('recipes.pug');
+  }
+  console.log("ingredient found");
+  const url = `http://www.food2fork.com/api/search?q=${ingredient}&key=${API_KEY}`;
+  requestModule.get(url, (err, res, data) => {
+      var dataObj = JSON.parse(data);
+      return response.render('recipes.pug', {
+        title : `${dataObj.count} recipes for ${ingredient}`,
+        recipes : dataObj.recipes
+      });
+  });
 });
 
-module.exports = app;
+app.post('/recipes', (req, res) => { 
+  console.log(req.query.ingredient);
+  if(!req.query.ingredient){
+    return res.json({message: 'ingredient not found'});
+  }
+  const url = `http://www.food2fork.com/api/search?q=${req.query.ingredient}&key=${API_KEY}`;
+  requestModule.get(url, (err, response, data) => {
+    return res.contentType('application/json').json(JSON.parse(data));
+    
+});
+});
+
+
+//start server
+app.listen(PORT, err =>{
+  if(err) console.log(err);
+  else{
+    console.log(`Server listening on port: ${PORT}`);
+  }
+});
