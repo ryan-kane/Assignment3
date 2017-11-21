@@ -17,10 +17,12 @@ function getRecipes() {
 			`
 			for (var i = 0; i < response.count; i++){
 				
-				/*
 				ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
 				<li>${response.recipes[i].title}</li>
+				<a href="${response.recipes[i].f2f_url}" target="_blank"> <img src="${response.recipes[i].image_url}" style="width:500px;height:500px;"> </a>
 				`
+				
+				/*
                 ingredientDiv.innerHTML = ingredientDiv.innerHTML + `
                 <div class="recipes">
                     <p>${response.recipes[i].title}<p>
@@ -28,6 +30,7 @@ function getRecipes() {
                 </div>
 				`
 				*/
+				
 			}
         }
     }
@@ -35,8 +38,8 @@ function getRecipes() {
     xhr.send()
 }
 
-/*
 //Attach Enter-key Handler
+/*
 const ENTER=13
 document.getElementById("ingredient")
     .addEventListener("keyup", function(event) {
